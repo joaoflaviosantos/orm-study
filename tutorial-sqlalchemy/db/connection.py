@@ -1,3 +1,3 @@
-from db.db import engine
+from db.engine import engine
 
 conn = engine.connect()
