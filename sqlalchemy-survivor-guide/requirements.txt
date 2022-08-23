@@ -1,0 +1,2 @@
+SQLAlchemy==1.4.40
+toml==0.10.2
