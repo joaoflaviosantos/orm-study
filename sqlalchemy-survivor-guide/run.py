@@ -1,11 +1,18 @@
+from src.repository.actor_repository import ActorRepository
 from src.repository.film_repository import FilmRepository
 
-repo = FilmRepository()
 
-insert = repo.insert('Test', 'Test', 2022)
+repo_film = FilmRepository()
+repo_actor = ActorRepository()
 
-update = repo.update('Test', 1994)
+insert = repo_film.insert('Test', 'Test', 2022)
 
-delete = repo.delete('Test')
+update = repo_film.update('Test', 1994)
 
-print(repo.select())
+delete = repo_film.delete('Test')
+
+print(repo_film.select())
+
+print(repo_actor.select())
+
+print(repo_film.select()[0].atores)
