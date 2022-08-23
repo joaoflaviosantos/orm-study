@@ -16,3 +16,5 @@ print(repo_film.select())
 print(repo_actor.select())
 
 print(repo_film.select()[0].atores)
+
+print(repo_film.select_with_genre_filter('Except test'))
