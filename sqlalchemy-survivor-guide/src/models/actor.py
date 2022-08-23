@@ -10,4 +10,4 @@ class Actor(Base):
     titulo_filme = Column(String, ForeignKey('filmes.titulo'))
 
     def __repr__(self) -> str:
-        return f'Actor: {self.nome} | Films: {self.titulo_filme}'
+        return f'Actor: {self.nome} | Film: {self.titulo_filme}'
