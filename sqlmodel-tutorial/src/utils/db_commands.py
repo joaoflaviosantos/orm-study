@@ -1,7 +1,14 @@
-from sqlmodel import Session
+import sys
+from sqlmodel import Session, select
 
 from src.db.db import engine, SQLModel
 from src.models.hero import Hero
+
+from sqlmodel.sql.expression import Select, SelectOfScalar
+
+# https://github.com/tiangolo/sqlmodel/issues/189#issuecomment-1025190094
+SelectOfScalar.inherit_cache = True  # type: ignore
+Select.inherit_cache = True  # type: ignore
 
 
 def create_db_and_tables():
@@ -9,6 +16,22 @@ def create_db_and_tables():
 
 
 def create_heroes():
+    hero_1 = Hero(name="Deadpond", secret_name="Dive Wilson")
+    hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
+    hero_3 = Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48)
+
+    with Session(engine) as session:
+        try:
+            session.add(hero_1)
+            session.add(hero_2)
+            session.add(hero_3)
+            session.commit()
+        except:
+            print("Unexpected error:", sys.exc_info()[0].__dict__)
+            session.rollback()
+
+
+def create_heroes_what_goes_back():
     hero_1 = Hero(name="Deadpond", secret_name="Dive Wilson")
     hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
     hero_3 = Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48)
@@ -51,9 +74,19 @@ def create_heroes():
             print("Hero 3:", hero_3)
 
         except:
+            print("Unexpected error:", sys.exc_info()[0].__dict__)
             session.rollback()
 
     print("\nAfter the session closes")
     print("Hero 1:", hero_1)
     print("Hero 2:", hero_2)
     print("Hero 3:", hero_3)
+
+
+def select_heroes():
+    with Session(engine) as session:
+        try:
+            heroes = session.exec(select(Hero)).all()
+            print(heroes)
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
