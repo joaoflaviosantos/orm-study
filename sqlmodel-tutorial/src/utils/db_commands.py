@@ -1,5 +1,5 @@
 import sys
-from sqlmodel import Session, select
+from sqlmodel import Session, select, or_
 
 from src.db.db import engine, SQLModel
 from src.models.hero import Hero
@@ -89,4 +89,33 @@ def select_heroes():
             heroes = session.exec(select(Hero)).all()
             print(heroes)
         except:
-            print("Unexpected error:", sys.exc_info()[0])
+            print("Unexpected error:", sys.exc_info()[0].__dict__)
+
+
+def select_heroes_with_simple_where():
+    with Session(engine) as session:
+        try:
+            heroes = session.exec(select(Hero).where(Hero.age == None)).all()
+            print(heroes)
+        except:
+            print("Unexpected error:", sys.exc_info()[0].__dict__)
+
+
+def select_heroes_with_and_where():
+    with Session(engine) as session:
+        try:
+            heroes = session.exec(select(Hero).where(
+                Hero.age >= 48, Hero.age < 50)).all()
+            print(heroes)
+        except:
+            print("Unexpected error:", sys.exc_info()[0].__dict__)
+
+
+def select_heroes_with_or_where():
+    with Session(engine) as session:
+        try:
+            heroes = session.exec(select(Hero).where(
+                or_(Hero.age <= 50, Hero.age > 90))).all()
+            print(heroes)
+        except:
+            print("Unexpected error:", sys.exc_info()[0].__dict__)
