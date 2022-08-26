@@ -7,6 +7,6 @@ class Hero(SQLModel, table=True):
     # https://github.com/tiangolo/sqlmodel/issues/65
     #name: str
     #name: str = Field(sa_column=Column("name", VARCHAR, unique=True))
-    name: str = Field(sa_column_kwargs={"unique": True})
+    name: str = Field(sa_column_kwargs={"unique": True}, index=True)
     secret_name: str
-    age: Optional[int] = None
+    age: Optional[int] = Field(default=None, index=True)

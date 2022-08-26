@@ -95,7 +95,8 @@ def select_heroes():
 def select_heroes_with_simple_where():
     with Session(engine) as session:
         try:
-            heroes = session.exec(select(Hero).where(Hero.age == None)).all()
+            heroes = session.exec(select(Hero).where(
+                Hero.name == "Deadpond")).all()
             print(heroes)
         except:
             print("Unexpected error:", sys.exc_info()[0].__dict__)
