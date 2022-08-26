@@ -18,6 +18,42 @@ def create_heroes():
             session.add(hero_1)
             session.add(hero_2)
             session.add(hero_3)
+
+            print("\nAfter adding to the session")
+            print("Hero 1:", hero_1)
+            print("Hero 2:", hero_2)
+            print("Hero 3:", hero_3)
+
             session.commit()
+
+            print("\nAfter committing the session")
+            print("Hero 1:", hero_1)
+            print("Hero 2:", hero_2)
+            print("Hero 3:", hero_3)
+
+            print("\nAfter committing the session, show IDs")
+            print("Hero 1 ID:", hero_1.id)
+            print("Hero 2 ID:", hero_2.id)
+            print("Hero 3 ID:", hero_3.id)
+
+            print("\nAfter committing the session, show names")
+            print("Hero 1 name:", hero_1.name)
+            print("Hero 2 name:", hero_2.name)
+            print("Hero 3 name:", hero_3.name)
+
+            session.refresh(hero_1)
+            session.refresh(hero_2)
+            session.refresh(hero_3)
+
+            print("\nAfter refreshing the heroes")
+            print("Hero 1:", hero_1)
+            print("Hero 2:", hero_2)
+            print("Hero 3:", hero_3)
+
         except:
             session.rollback()
+
+    print("\nAfter the session closes")
+    print("Hero 1:", hero_1)
+    print("Hero 2:", hero_2)
+    print("Hero 3:", hero_3)
