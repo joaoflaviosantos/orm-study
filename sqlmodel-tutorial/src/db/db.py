@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, create_engine
-from src.models import hero
+from src.models import team, hero
 
 sqlite_file_name = "db.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
