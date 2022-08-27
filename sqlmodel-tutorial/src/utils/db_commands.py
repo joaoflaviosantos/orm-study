@@ -1,4 +1,5 @@
 import sys
+import random
 from sqlmodel import Session, select, or_
 
 from src.db.db import engine, SQLModel
@@ -164,8 +165,8 @@ def select_heroes_with_get():
 def select_heroes_with_limit():
     with Session(engine) as session:
         try:
-            hero = session.exec(select(Hero).limit(3)).all()
-            print("\nHero:", hero)
+            heros = session.exec(select(Hero).limit(3)).all()
+            print("\nHeros:", heros)
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
 
@@ -173,7 +174,37 @@ def select_heroes_with_limit():
 def select_heroes_with_offset_and_limit():
     with Session(engine) as session:
         try:
-            hero = session.exec(select(Hero).offset(3).limit(3)).all()
-            print("\nHero:", hero)
+            heros = session.exec(select(Hero).offset(3).limit(3)).all()
+            print("\nHeros:", heros)
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
+
+
+def update_heroes():
+    with Session(engine) as session:
+        try:
+            hero_1 = session.exec(select(Hero).where(
+                Hero.name == "Spider-Boy")).one()
+            print("\nHero 1:", hero_1)
+
+            hero_1.age = int(random.uniform(15, 50))
+            # hero_1.name="Spider-Youngster"
+            session.add(hero_1)
+
+            hero_2 = session.exec(select(Hero).where(
+                Hero.name == "Captain America")).one()
+            print("\nHero 2:", hero_2)
+
+            hero_2.age = int(random.uniform(15, 50))
+            #hero_2.name="Captain North America Except Canada"
+            session.add(hero_2)
+
+            session.commit()
+            session.refresh(hero_1)
+            session.refresh(hero_2)
+
+            print("Updated hero 1:", hero_1)
+            print("Updated hero 2:", hero_2)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()

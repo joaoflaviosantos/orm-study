@@ -8,7 +8,8 @@ from src.utils.db_commands import create_db_and_tables,\
     select_heroes_with_one,\
     select_heroes_with_get,\
     select_heroes_with_limit,\
-    select_heroes_with_offset_and_limit
+    select_heroes_with_offset_and_limit,\
+    update_heroes
 
 
 def main():
@@ -23,6 +24,7 @@ def main():
     select_heroes_with_get()
     select_heroes_with_limit()
     select_heroes_with_offset_and_limit()
+    update_heroes()
 
 
 if __name__ == "__main__":
