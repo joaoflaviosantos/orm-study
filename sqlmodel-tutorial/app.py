@@ -1,30 +1,22 @@
-from src.utils.db_commands import create_db_and_tables,\
-    create_heroes,\
-    select_heroes,\
-    select_heroes_with_simple_where,\
-    select_heroes_with_and_where,\
-    select_heroes_with_or_where,\
-    select_heroes_with_first,\
-    select_heroes_with_one,\
-    select_heroes_with_get,\
-    select_heroes_with_limit,\
-    select_heroes_with_offset_and_limit,\
-    update_heroes
+from src.utils import commons
+from src.utils import db_commands
 
 
 def main():
-    create_db_and_tables()
-    create_heroes()
-    select_heroes()
-    select_heroes_with_simple_where()
-    select_heroes_with_and_where()
-    select_heroes_with_or_where()
-    select_heroes_with_first()
-    select_heroes_with_one()
-    select_heroes_with_get()
-    select_heroes_with_limit()
-    select_heroes_with_offset_and_limit()
-    update_heroes()
+    commons.exclusion_db()
+    db_commands.create_db_and_tables()
+    db_commands.create_heroes()
+    db_commands.select_heroes()
+    db_commands.select_heroes_with_simple_where()
+    db_commands.select_heroes_with_and_where()
+    db_commands.select_heroes_with_or_where()
+    db_commands.select_heroes_with_first()
+    db_commands.select_heroes_with_one()
+    db_commands.select_heroes_with_get()
+    db_commands.select_heroes_with_limit()
+    db_commands.select_heroes_with_offset_and_limit()
+    db_commands.update_heroes()
+    db_commands.delete_heroes()
 
 
 if __name__ == "__main__":

@@ -187,8 +187,8 @@ def update_heroes():
                 Hero.name == "Spider-Boy")).one()
             print("\nHero 1:", hero_1)
 
-            hero_1.age = int(random.uniform(15, 50))
-            # hero_1.name="Spider-Youngster"
+            hero_1.age = 16
+            hero_1.name = "Spider-Youngster"
             session.add(hero_1)
 
             hero_2 = session.exec(select(Hero).where(
@@ -203,8 +203,29 @@ def update_heroes():
             session.refresh(hero_1)
             session.refresh(hero_2)
 
-            print("Updated hero 1:", hero_1)
-            print("Updated hero 2:", hero_2)
+            print("\nUpdated hero 1:", hero_1)
+            print("\nUpdated hero 2:", hero_2)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()
+
+
+def delete_heroes():
+    with Session(engine) as session:
+        try:
+            hero = session.exec(select(Hero).where(
+                Hero.name == "Spider-Youngster")).one()
+            print("\nHero: ", hero)
+
+            session.delete(hero)
+            session.commit()
+            print("\nDeleted hero:", hero)
+
+            hero = session.exec(select(Hero).where(
+                Hero.name == "Spider-Youngster")).first()
+
+            if hero is None:
+                print("\nThere's no hero named Spider-Youngster")
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
             session.rollback()
