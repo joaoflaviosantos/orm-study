@@ -10,3 +10,4 @@ class Hero(SQLModel, table=True):
     name: str = Field(sa_column_kwargs={"unique": True}, index=True)
     secret_name: str
     age: Optional[int] = Field(default=None, index=True)
+    team_id: Optional[int] = Field(default=None, foreign_key="team.id")
