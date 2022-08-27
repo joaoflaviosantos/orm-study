@@ -19,12 +19,20 @@ def create_heroes():
     hero_1 = Hero(name="Deadpond", secret_name="Dive Wilson")
     hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
     hero_3 = Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48)
+    hero_4 = Hero(name="Tarantula", secret_name="Natalia Roman-on", age=32)
+    hero_5 = Hero(name="Black Lion", secret_name="Trevor Challa", age=35)
+    hero_6 = Hero(name="Dr. Weird", secret_name="Steve Weird", age=36)
+    hero_7 = Hero(name="Captain America", secret_name="Esteban Roger", age=93)
 
     with Session(engine) as session:
         try:
             session.add(hero_1)
             session.add(hero_2)
             session.add(hero_3)
+            session.add(hero_4)
+            session.add(hero_5)
+            session.add(hero_6)
+            session.add(hero_7)
             session.commit()
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
@@ -148,6 +156,24 @@ def select_heroes_with_get():
     with Session(engine) as session:
         try:
             hero = session.get(Hero, 1)
+            print("\nHero:", hero)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+
+
+def select_heroes_with_limit():
+    with Session(engine) as session:
+        try:
+            hero = session.exec(select(Hero).limit(3)).all()
+            print("\nHero:", hero)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+
+
+def select_heroes_with_offset_and_limit():
+    with Session(engine) as session:
+        try:
+            hero = session.exec(select(Hero).offset(3).limit(3)).all()
             print("\nHero:", hero)
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
