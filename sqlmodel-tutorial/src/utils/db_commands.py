@@ -27,7 +27,7 @@ def create_heroes():
             session.add(hero_3)
             session.commit()
         except:
-            print("Unexpected error:", sys.exc_info()[0].__dict__)
+            print("\nUnexpected error:", sys.exc_info()[0])
             session.rollback()
 
 
@@ -74,7 +74,7 @@ def create_heroes_what_goes_back():
             print("Hero 3:", hero_3)
 
         except:
-            print("Unexpected error:", sys.exc_info()[0].__dict__)
+            print("\nUnexpected error:", sys.exc_info()[0])
             session.rollback()
 
     print("\nAfter the session closes")
@@ -87,9 +87,10 @@ def select_heroes():
     with Session(engine) as session:
         try:
             heroes = session.exec(select(Hero)).all()
+            print()
             print(heroes)
         except:
-            print("Unexpected error:", sys.exc_info()[0].__dict__)
+            print("\nUnexpected error:", sys.exc_info()[0])
 
 
 def select_heroes_with_simple_where():
@@ -97,9 +98,10 @@ def select_heroes_with_simple_where():
         try:
             heroes = session.exec(select(Hero).where(
                 Hero.name == "Deadpond")).all()
+            print()
             print(heroes)
         except:
-            print("Unexpected error:", sys.exc_info()[0].__dict__)
+            print("\nUnexpected error:", sys.exc_info()[0])
 
 
 def select_heroes_with_and_where():
@@ -107,9 +109,10 @@ def select_heroes_with_and_where():
         try:
             heroes = session.exec(select(Hero).where(
                 Hero.age >= 48, Hero.age < 50)).all()
+            print()
             print(heroes)
         except:
-            print("Unexpected error:", sys.exc_info()[0].__dict__)
+            print("\nUnexpected error:", sys.exc_info()[0])
 
 
 def select_heroes_with_or_where():
@@ -117,6 +120,34 @@ def select_heroes_with_or_where():
         try:
             heroes = session.exec(select(Hero).where(
                 or_(Hero.age <= 50, Hero.age > 90))).all()
+            print()
             print(heroes)
         except:
-            print("Unexpected error:", sys.exc_info()[0].__dict__)
+            print("\nUnexpected error:", sys.exc_info()[0])
+
+
+def select_heroes_with_first():
+    with Session(engine) as session:
+        try:
+            hero = session.exec(select(Hero).where(Hero.name == None)).first()
+            print("\nHero:", hero)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+
+
+def select_heroes_with_one():
+    with Session(engine) as session:
+        try:
+            hero = session.exec(select(Hero).where(Hero.name == None)).one()
+            print("\nHero:", hero)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+
+
+def select_heroes_with_get():
+    with Session(engine) as session:
+        try:
+            hero = session.get(Hero, 1)
+            print("\nHero:", hero)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
