@@ -197,7 +197,7 @@ def update_heroes():
             print("\nHero 2:", hero_2)
 
             hero_2.age = int(random.uniform(15, 50))
-            #hero_2.name="Captain North America Except Canada"
+            # hero_2.name="Captain North America Except Canada"
             session.add(hero_2)
 
             session.commit()
@@ -252,20 +252,71 @@ def create_heroes_with_teams():
                 age=48,
                 team_id=team_preventers.id,
             )
+            hero_spider_boy = Hero(
+                name="Spider-Boy", secret_name="Pedro Parqueador")
             hero_youngster = Hero(
-                name="Spider-Youngster", secret_name="Pedro Parqueador")
+                name="Spider-Youngster", secret_name="Youngster Deleted")
             session.add(hero_deadpond)
             session.add(hero_rusty_man)
+            session.add(hero_spider_boy)
             session.add(hero_youngster)
             session.commit()
 
             session.refresh(hero_deadpond)
             session.refresh(hero_rusty_man)
+            session.refresh(hero_spider_boy)
             session.refresh(hero_youngster)
 
             print("\nCreated hero:", hero_deadpond)
             print("\nCreated hero:", hero_rusty_man)
+            print("\nCreated hero:", hero_spider_boy)
             print("\nCreated hero:", hero_youngster)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()
+
+
+def select_heroes_with_implicit_join():
+    with Session(engine) as session:
+        try:
+            results = session.exec(
+                select(Hero, Team).where(Hero.team_id == Team.id))
+            for hero, team in results:
+                print("\nHero:", hero, "Team:", team)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()
+
+
+def select_heroes_with_explicit_join():
+    with Session(engine) as session:
+        try:
+            results = session.exec(select(Hero, Team).join(Team))
+            for hero, team in results:
+                print("\nHero:", hero, "Team:", team)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()
+
+
+def select_heroes_with_left_outer_join():
+    with Session(engine) as session:
+        try:
+            results = session.exec(select(Hero, Team).join(Team, isouter=True))
+            for hero, team in results:
+                print("\nHero:", hero, "Team:", team)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()
+
+
+def select_heroes_with_explicit_join_and_where():
+    with Session(engine) as session:
+        try:
+            results = session.exec(select(Hero, Team).join(
+                Team).where(Team.name == "Preventers"))
+            for hero, team in results:
+                print("\nHero:", hero, "Team:", team)
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
             session.rollback()
