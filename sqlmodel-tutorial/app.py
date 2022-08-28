@@ -5,7 +5,7 @@ from src.utils import db_commands
 def main():
     commons.exclusion_db()
     db_commands.create_db_and_tables()
-    db_commands.create_heroes()
+    db_commands.create_heroes_with_teams()
     db_commands.select_heroes()
     db_commands.select_heroes_with_simple_where()
     db_commands.select_heroes_with_and_where()
