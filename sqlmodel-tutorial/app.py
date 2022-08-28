@@ -17,6 +17,10 @@ def main():
     db_commands.select_heroes_with_offset_and_limit()
     db_commands.update_heroes()
     db_commands.delete_heroes()
+    db_commands.select_heroes_with_implicit_join()
+    db_commands.select_heroes_with_explicit_join()
+    db_commands.select_heroes_with_left_outer_join()
+    db_commands.select_heroes_with_explicit_join_and_where()
 
 
 if __name__ == "__main__":
