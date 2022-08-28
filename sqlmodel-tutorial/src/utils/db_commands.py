@@ -4,6 +4,7 @@ from sqlmodel import Session, select, or_
 
 from src.db.db import engine, SQLModel
 from src.models.hero import Hero
+from src.models.team import Team
 
 from sqlmodel.sql.expression import Select, SelectOfScalar
 
@@ -226,6 +227,45 @@ def delete_heroes():
 
             if hero is None:
                 print("\nThere's no hero named Spider-Youngster")
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()
+
+
+def create_heroes_with_teams():
+    with Session(engine) as session:
+        try:
+            team_preventers = Team(
+                name="Preventers", headquarters="Sharp Tower")
+            team_z_force = Team(
+                name="Z-Force", headquarters="Sister Margaret’s Bar")
+            session.add(team_preventers)
+            session.add(team_z_force)
+            session.commit()
+
+            hero_deadpond = Hero(
+                name="Deadpond", secret_name="Dive Wilson", team_id=team_z_force.id
+            )
+            hero_rusty_man = Hero(
+                name="Rusty-Man",
+                secret_name="Tommy Sharp",
+                age=48,
+                team_id=team_preventers.id,
+            )
+            hero_youngster = Hero(
+                name="Spider-Youngster", secret_name="Pedro Parqueador")
+            session.add(hero_deadpond)
+            session.add(hero_rusty_man)
+            session.add(hero_youngster)
+            session.commit()
+
+            session.refresh(hero_deadpond)
+            session.refresh(hero_rusty_man)
+            session.refresh(hero_youngster)
+
+            print("\nCreated hero:", hero_deadpond)
+            print("\nCreated hero:", hero_rusty_man)
+            print("\nCreated hero:", hero_youngster)
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
             session.rollback()
