@@ -21,7 +21,8 @@ def main():
     db_commands.select_heroes_with_explicit_join()
     db_commands.select_heroes_with_left_outer_join()
     db_commands.select_heroes_with_explicit_join_and_where()
-    db_commands.update_heroes_team()
+    db_commands.create_heroes_team_relationship()
+    db_commands.remove_heroes_team_relationship()
 
 
 if __name__ == "__main__":
