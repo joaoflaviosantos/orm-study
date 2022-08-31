@@ -106,8 +106,7 @@ def select_heroes():
 def select_heroes_with_simple_where():
     with Session(engine) as session:
         try:
-            heroes = session.exec(select(Hero).where(
-                Hero.name == "Deadpond")).all()
+            heroes = session.exec(select(Hero).where(Hero.name == "Deadpond")).all()
             print()
             print(heroes)
         except:
@@ -117,8 +116,9 @@ def select_heroes_with_simple_where():
 def select_heroes_with_and_where():
     with Session(engine) as session:
         try:
-            heroes = session.exec(select(Hero).where(
-                Hero.age >= 48, Hero.age < 50)).all()
+            heroes = session.exec(
+                select(Hero).where(Hero.age >= 48, Hero.age < 50)
+            ).all()
             print()
             print(heroes)
         except:
@@ -128,8 +128,9 @@ def select_heroes_with_and_where():
 def select_heroes_with_or_where():
     with Session(engine) as session:
         try:
-            heroes = session.exec(select(Hero).where(
-                or_(Hero.age <= 50, Hero.age > 90))).all()
+            heroes = session.exec(
+                select(Hero).where(or_(Hero.age <= 50, Hero.age > 90))
+            ).all()
             print()
             print(heroes)
         except:
@@ -184,16 +185,16 @@ def select_heroes_with_offset_and_limit():
 def update_heroes():
     with Session(engine) as session:
         try:
-            hero_1 = session.exec(select(Hero).where(
-                Hero.name == "Spider-Boy")).one()
+            hero_1 = session.exec(select(Hero).where(Hero.name == "Spider-Boy")).one()
             print("\nHero 1:", hero_1)
 
             hero_1.age = 16
             hero_1.name = "Spider-Youngster"
             session.add(hero_1)
 
-            hero_2 = session.exec(select(Hero).where(
-                Hero.name == "Captain America")).one()
+            hero_2 = session.exec(
+                select(Hero).where(Hero.name == "Captain America")
+            ).one()
             print("\nHero 2:", hero_2)
 
             hero_2.age = int(random.uniform(15, 50))
@@ -214,16 +215,18 @@ def update_heroes():
 def delete_heroes():
     with Session(engine) as session:
         try:
-            hero = session.exec(select(Hero).where(
-                Hero.name == "Spider-Youngster")).one()
+            hero = session.exec(
+                select(Hero).where(Hero.name == "Spider-Youngster")
+            ).one()
             print("\nHero: ", hero)
 
             session.delete(hero)
             session.commit()
             print("\nDeleted hero:", hero)
 
-            hero = session.exec(select(Hero).where(
-                Hero.name == "Spider-Youngster")).first()
+            hero = session.exec(
+                select(Hero).where(Hero.name == "Spider-Youngster")
+            ).first()
 
             if hero is None:
                 print("\nThere's no hero named Spider-Youngster")
@@ -235,10 +238,8 @@ def delete_heroes():
 def create_heroes_with_teams():
     with Session(engine) as session:
         try:
-            team_preventers = Team(
-                name="Preventers", headquarters="Sharp Tower")
-            team_z_force = Team(
-                name="Z-Force", headquarters="Sister Margaret’s Bar")
+            team_preventers = Team(name="Preventers", headquarters="Sharp Tower")
+            team_z_force = Team(name="Z-Force", headquarters="Sister Margaret’s Bar")
             session.add(team_preventers)
             session.add(team_z_force)
             session.commit()
@@ -252,10 +253,10 @@ def create_heroes_with_teams():
                 age=48,
                 team_id=team_preventers.id,
             )
-            hero_spider_boy = Hero(
-                name="Spider-Boy", secret_name="Pedro Parqueador")
+            hero_spider_boy = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
             hero_youngster = Hero(
-                name="Spider-Youngster", secret_name="Youngster Deleted")
+                name="Spider-Youngster", secret_name="Deleted Youngster"
+            )
             session.add(hero_deadpond)
             session.add(hero_rusty_man)
             session.add(hero_spider_boy)
@@ -279,8 +280,7 @@ def create_heroes_with_teams():
 def select_heroes_with_implicit_join():
     with Session(engine) as session:
         try:
-            results = session.exec(
-                select(Hero, Team).where(Hero.team_id == Team.id))
+            results = session.exec(select(Hero, Team).where(Hero.team_id == Team.id))
             for hero, team in results:
                 print("\nHero:", hero, "Team:", team)
         except:
@@ -313,10 +313,33 @@ def select_heroes_with_left_outer_join():
 def select_heroes_with_explicit_join_and_where():
     with Session(engine) as session:
         try:
-            results = session.exec(select(Hero, Team).join(
-                Team).where(Team.name == "Preventers"))
+            results = session.exec(
+                select(Hero, Team).join(Team).where(Team.name == "Preventers")
+            )
             for hero, team in results:
                 print("\nHero:", hero, "Team:", team)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()
+
+
+def update_heroes_team():
+    with Session(engine) as session:
+        try:
+            hero_spider_boy = session.exec(
+                select(Hero).where(Hero.name == "Spider-Boy")
+            ).one()
+            print("\nHero:", hero_spider_boy)
+
+            team_preventers = session.exec(
+                select(Team).where(Team.name == "Preventers")
+            ).one()
+
+            hero_spider_boy.team_id = team_preventers.id
+            session.add(hero_spider_boy)
+            session.commit()
+            session.refresh(hero_spider_boy)
+            print("Updated hero:", hero_spider_boy)
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
             session.rollback()
