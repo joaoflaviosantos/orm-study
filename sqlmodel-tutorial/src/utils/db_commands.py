@@ -323,7 +323,7 @@ def select_heroes_with_explicit_join_and_where():
             session.rollback()
 
 
-def update_heroes_team():
+def create_heroes_team_relationship():
     with Session(engine) as session:
         try:
             hero_spider_boy = session.exec(
@@ -339,7 +339,25 @@ def update_heroes_team():
             session.add(hero_spider_boy)
             session.commit()
             session.refresh(hero_spider_boy)
-            print("Updated hero:", hero_spider_boy)
+            print("\nUpdated hero:", hero_spider_boy)
+        except:
+            print("\nUnexpected error:", sys.exc_info()[0])
+            session.rollback()
+
+
+def remove_heroes_team_relationship():
+    with Session(engine) as session:
+        try:
+            hero_spider_boy = session.exec(
+                select(Hero).where(Hero.name == "Spider-Boy")
+            ).one()
+            print("\nHero:", hero_spider_boy)
+
+            hero_spider_boy.team_id = None
+            session.add(hero_spider_boy)
+            session.commit()
+            session.refresh(hero_spider_boy)
+            print("\nUpdated hero:", hero_spider_boy)
         except:
             print("\nUnexpected error:", sys.exc_info()[0])
             session.rollback()
