@@ -1,8 +1,9 @@
+from src.configs.connection import DBConnectionHandler
 from src.repository.actor_repository import ActorRepository
 from src.repository.film_repository import FilmRepository
 
 
-repo_film = FilmRepository()
+repo_film = FilmRepository(DBConnectionHandler)
 repo_actor = ActorRepository()
 
 insert = repo_film.insert('Test', 'Test', 2022)

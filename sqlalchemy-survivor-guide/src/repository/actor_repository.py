@@ -1,7 +1,7 @@
 from sqlalchemy.orm.exc import NoResultFound
 from src.configs.connection import DBConnectionHandler
-from src.models.actor import Actor
-from src.models.film import Film
+from src.models.model import Actor
+from src.models.model import Film
 
 
 class ActorRepository:
